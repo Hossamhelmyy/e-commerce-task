@@ -27,7 +27,6 @@ class Products extends React.Component {
 			active: "all",
 
 			currentyType: 0,
-
 			sympol: "$",
 		};
 	}
@@ -37,11 +36,13 @@ class Products extends React.Component {
 				"http://localhost:4000/",
 				Load_Data(fetchType),
 			);
-			console.log(data);
+
 			if (this.state.data.length === 0) {
 				this.setState({ data: data.category });
 				data.category.products.map((product) => {
-					this.setState({ prices: product.prices });
+					this.setState({
+						prices: product.prices,
+					});
 				});
 			}
 		} catch (e) {
@@ -55,7 +56,6 @@ class Products extends React.Component {
 	getFetchTypeState = (fetchType) => {
 		this.setState({ data: "" });
 		this.fetch(fetchType);
-		console.log(fetchType);
 	};
 
 	addProductToCartt = (product, id) => {
@@ -85,15 +85,8 @@ class Products extends React.Component {
 
 	currentyTypeKnow = (currencyTypeState) => {
 		this.setState({ currentyType: currencyTypeState });
-		console.log(currencyTypeState);
 	};
 	render() {
-		console.log(this.state.currentyType);
-		console.log(
-			this.state.prices[this.state.currentyType]?.currency
-				.symbol,
-		);
-
 		return (
 			<div className={`home`}>
 				<Nav
@@ -126,6 +119,7 @@ class Products extends React.Component {
 							</Link>
 
 							<p>{product.name}</p>
+
 							<span>
 								{
 									product.prices[this.state.currentyType]
@@ -136,6 +130,25 @@ class Products extends React.Component {
 										?.amount
 								}
 							</span>
+
+							{product.attributes.map((attribute, i) => (
+								<div key={i} className="attributes">
+									{attribute.items.map((item, i) => (
+										<input
+											className="attribute"
+											key={i}
+											defaultValue={item.value}
+											type={
+												attribute.type === "swatch"
+													? "color"
+													: attribute.type
+											}
+											name={attribute.name}
+											id={attribute.id}
+										/>
+									))}
+								</div>
+							))}
 						</div>
 					))}
 				</div>

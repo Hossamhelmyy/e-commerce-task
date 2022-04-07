@@ -28,8 +28,6 @@ class ProductPage extends React.Component {
 			imgNum: 0,
 			currentyType: 0,
 			attributes: [],
-			attributesItems: [],
-			selected: false,
 		};
 	}
 	async fetch(query) {
@@ -45,9 +43,6 @@ class ProductPage extends React.Component {
 			this.setState({ gallery: data.product.gallery });
 			this.setState({
 				attributes: data.product.attributes,
-			});
-			data.product.attributes.map((attribute) => {
-				this.setState({ attributesItems: attribute.items });
 			});
 		} catch (e) {
 			console.log(e);
@@ -67,7 +62,6 @@ class ProductPage extends React.Component {
 		if (product.inStock) {
 			if (exist) {
 				this.props.updateCartPlus(exist);
-				console.log(exist);
 			} else {
 				this.props.addProductToCart({
 					product: product,
@@ -89,9 +83,6 @@ class ProductPage extends React.Component {
 		const filteredGallery = this.state.gallery.filter(
 			(photo, i) => i !== this.state.imgNum,
 		);
-
-		console.log(this.state.attributesItems);
-		console.log(this.state.attributes);
 
 		return (
 			<>
@@ -128,7 +119,7 @@ class ProductPage extends React.Component {
 									<input
 										className="size"
 										key={i}
-										value={item.value}
+										defaultValue={item.value}
 										type={
 											attribute.type === "swatch"
 												? "color"

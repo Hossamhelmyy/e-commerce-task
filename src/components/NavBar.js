@@ -40,7 +40,9 @@ class Nav extends React.Component {
 			active: "tech",
 		});
 		this.setState({ typeOfQuery: "tech" });
-		this.props.getFetchTypeState("tech");
+		if (this.props.getFetchTypeState) {
+			this.props.getFetchTypeState("tech");
+		}
 	};
 
 	fetchClothes = () => {
@@ -48,14 +50,18 @@ class Nav extends React.Component {
 			active: "clothes",
 		});
 		this.setState({ typeOfQuery: "clothes" });
-		this.props.getFetchTypeState("clothes");
+		if (this.props.getFetchTypeState) {
+			this.props.getFetchTypeState("clothes");
+		}
 	};
 	fetchAll = () => {
 		this.setState({
 			active: "all",
 		});
 		this.setState({ typeOfQuery: "all" });
-		this.props.getFetchTypeState("all");
+		if (this.props.getFetchTypeState) {
+			this.props.getFetchTypeState("all");
+		}
 	};
 	showCarthandle = () => {
 		this.setState({
@@ -77,7 +83,6 @@ class Nav extends React.Component {
 		this.props.currentyTypeHandle(this.state.currentyType);
 	};
 	render() {
-		console.log(this.props.prices);
 		return (
 			<nav className="container">
 				<div className="nav-left">

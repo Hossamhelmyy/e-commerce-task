@@ -25,7 +25,6 @@ class Cart extends React.Component {
 				"http://localhost:4000/",
 				Load_Data("all"),
 			);
-			console.log(data);
 
 			data.category.products.map((product) => {
 				this.setState({ prices: product.prices });
@@ -39,11 +38,9 @@ class Cart extends React.Component {
 	}
 	getCurrentType = (currencyTypeState) => {
 		this.setState({ currentyType: currencyTypeState });
-		console.log(currencyTypeState);
 	};
 
 	render() {
-		console.log(this.state.prices);
 		return (
 			<>
 				<NavBar
