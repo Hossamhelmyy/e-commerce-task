@@ -25,9 +25,10 @@ class Products extends React.Component {
 			data: "",
 			prices: [],
 			active: "all",
-
+			overlay: false,
 			currentyType: 0,
 			sympol: "$",
+			selectOption: false,
 		};
 	}
 	async fetch(fetchType) {
@@ -58,28 +59,41 @@ class Products extends React.Component {
 		this.fetch(fetchType);
 	};
 
+	getOverlayState = (overlayState) => {
+		this.setState({ overlay: !overlayState });
+	};
 	addProductToCartt = (product, id) => {
 		const exist = this.props.cartItems.find(
 			(item) => item.id === product.id,
 		);
-		if (product.inStock) {
-			if (exist) {
-				this.props.updateCartPlus(exist);
-				console.log(exist);
+		if (this.state.selectOption === true) {
+			if (product.inStock) {
+				if (exist) {
+					this.props.updateCartPlus(exist);
+				} else {
+					this.props.addProductToCart({
+						product: product,
+						quantity: 1,
+						id: id,
+					});
+				}
 			} else {
-				this.props.addProductToCart({
-					product: product,
-					quantity: 1,
-					id: id,
+				swal({
+					text: "this product is finished from the stock",
+					icon: "warning",
+					buttons: "OK",
+					dangerMode: true,
 				});
 			}
+			this.setState({ selectOption: false });
 		} else {
 			swal({
-				text: "this product is finished from the stock",
+				text: "you should select an option",
 				icon: "warning",
 				buttons: "OK",
 				dangerMode: true,
 			});
+			this.setState({ selectOption: false });
 		}
 	};
 
@@ -88,11 +102,15 @@ class Products extends React.Component {
 	};
 	render() {
 		return (
-			<div className={`home`}>
+			<div
+				className={`home ${
+					this.state.overlay && "overlay"
+				}`}>
 				<Nav
 					getFetchTypeState={this.getFetchTypeState}
 					currentyTypeKnow={this.currentyTypeKnow}
 					prices={this.state.prices}
+					getOverlayState={this.getOverlayState}
 				/>
 				<div className="title">
 					<h1>{this.state.data.name}</h1>
@@ -135,6 +153,11 @@ class Products extends React.Component {
 								<div key={i} className="attributes">
 									{attribute.items.map((item, i) => (
 										<input
+											onClick={() =>
+												this.setState({
+													selectOption: true,
+												})
+											}
 											className="attribute"
 											key={i}
 											defaultValue={item.value}

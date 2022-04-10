@@ -1,13 +1,12 @@
 /* eslint-disable array-callback-return */
-import { createSlice } from '@reduxjs/toolkit';
-import { produce } from 'immer';
+import { createSlice } from "@reduxjs/toolkit";
+import { produce } from "immer";
 
 const initialState = {
 	cartItems: [],
-	prices: [],
 };
 export const themeReducer = createSlice({
-	name: 'Reudcer',
+	name: "Reudcer",
 	initialState,
 	reducers: {
 		addProductToCart(state, action) {
@@ -33,27 +32,6 @@ export const themeReducer = createSlice({
 						state.cartItems = cartItems;
 					}
 				}
-			});
-		},
-		addPrices(state, action) {
-			return produce(state, (DRAFT_STATE) => {
-				DRAFT_STATE.prices = action.payload;
-			});
-		},
-		removeProductFormCart(state, action) {
-			const product = action.payload;
-
-			return produce(state, (DRAFT_STATE) => {
-				const cartItems = DRAFT_STATE.cartItems.filter(
-					(item) => item.name !== product.name,
-				);
-				DRAFT_STATE.cartItems = cartItems;
-			});
-		},
-
-		clearCart(state) {
-			return produce(state, (DRAFT_STATE) => {
-				DRAFT_STATE.cartItems = [];
 			});
 		},
 	},

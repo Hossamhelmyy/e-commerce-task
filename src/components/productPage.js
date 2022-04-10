@@ -28,6 +28,7 @@ class ProductPage extends React.Component {
 			imgNum: 0,
 			currentyType: 0,
 			attributes: [],
+			selectOption: false,
 		};
 	}
 	async fetch(query) {
@@ -59,23 +60,34 @@ class ProductPage extends React.Component {
 		const exist = this.props.cartItems.find(
 			(item) => item.id === product.id,
 		);
-		if (product.inStock) {
-			if (exist) {
-				this.props.updateCartPlus(exist);
+		if (this.state.selectOption === true) {
+			if (product.inStock) {
+				if (exist) {
+					this.props.updateCartPlus(exist);
+				} else {
+					this.props.addProductToCart({
+						product: product,
+						quantity: 1,
+						id: id,
+					});
+				}
 			} else {
-				this.props.addProductToCart({
-					product: product,
-					quantity: 1,
-					id: id,
+				swal({
+					text: "this product is finished from the stock",
+					icon: "warning",
+					buttons: "OK",
+					dangerMode: true,
 				});
 			}
+			this.setState({ selectOption: false });
 		} else {
 			swal({
-				text: "this product is finished from the stock",
+				text: "you should select an option",
 				icon: "warning",
 				buttons: "OK",
 				dangerMode: true,
 			});
+			this.setState({ selectOption: false });
 		}
 	};
 	render() {
@@ -117,6 +129,11 @@ class ProductPage extends React.Component {
 							<div key={i} className="product-sizes">
 								{attribute.items.map((item, i) => (
 									<input
+										onClick={() =>
+											this.setState({
+												selectOption: true,
+											})
+										}
 										className="size"
 										key={i}
 										defaultValue={item.value}

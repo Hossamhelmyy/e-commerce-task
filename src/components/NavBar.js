@@ -63,6 +63,7 @@ class Nav extends React.Component {
 			this.props.getFetchTypeState("all");
 		}
 	};
+
 	showCarthandle = () => {
 		this.setState({
 			showCurrency: false,
@@ -70,6 +71,9 @@ class Nav extends React.Component {
 		this.setState({
 			showCart: !this.state.showCart,
 		});
+		if (this.props.getOverlayState) {
+			this.props.getOverlayState(this.state.showCart);
+		}
 	};
 	showCurrencyDropdown = () => {
 		this.setState({
